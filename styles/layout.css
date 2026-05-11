@@ -1,0 +1,358 @@
+/* =========================================
+   4. COLUNA ESQUERDA: NARRATIVA
+========================================= */
+.painel-narrativa {
+    /* Responsividade inteligente: mínimo de 280px, ideal de 25vw, máximo de 400px */
+    flex: 0 0 clamp(280px, 25vw, 400px); 
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.painel-narrativa::-webkit-scrollbar { width: 6px; }
+.painel-narrativa::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+
+.video-container {
+    background: #1a1a2e;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    position: relative;
+    overflow: hidden; /* Mantém o vídeo dentro das bordas arredondadas */
+}
+.video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.texto-cenario {
+    padding: 18px;
+    line-height: 1.7;
+    font-size: 0.88rem;
+    color: #333;
+    
+    /* AS 3 LINHAS MÁGICAS DA RESOLUÇÃO */
+    flex: 1; /* Faz a div esticar e preencher todo o espaço vertical que sobrar na tela */
+    min-height: 150px; /* Garante que ela nunca suma, mesmo se o JS não injetar nada */
+    overflow-y: auto; /* Se o texto do cenário for muito longo, cria uma barra de rolagem só pra ela */
+}
+.texto-cenario p { margin-bottom: 10px; }
+.texto-cenario p:last-child { margin-bottom: 0; }
+.texto-cenario strong { color: #1a1a2e; }
+
+.tag {
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-weight: 800;
+    display: inline-block;
+    font-size: 0.8rem;
+}
+.tag.entidade { background: var(--cor-entidade); }
+.tag.relacionamento { background: var(--cor-relacionamento); }
+.tag.atributo { background: var(--cor-atributo); }
+
+.legenda {
+    padding: 14px;
+    font-size: 0.78rem;
+}
+.legenda-titulo {
+    font-weight: 800;
+    color: #555;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+}
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    color: #444;
+}
+.legenda-cor {
+    width: 14px; height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   5. COLUNA CENTRAL: CANVAS MER
+========================================= */
+.painel-modelagem {
+    flex: 1; /* Preenche o resto da tela */
+    display: flex;
+    flex-direction: column;
+    background: rgb(233, 223, 236);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    position: relative;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #1a1a2e;
+    color: white;
+    z-index: var(--z-ui-base);
+}
+.topbar-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #a5b4fc;
+}
+.topbar-modos { display: flex; gap: 6px; }
+
+.btn-modo {
+    padding: 5px 12px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-modo:hover { background: rgba(255,255,255,0.1); color: white; }
+.btn-modo.ativo { background: var(--cor-primaria); color: white; border-color: var(--cor-primaria); }
+
+.alerta-erro {
+    background: linear-gradient(90deg, #ffcdd2, #ffebee);
+    color: #b71c1c;
+    text-align: center;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    z-index: var(--z-alerta);
+    display: none;
+    border-bottom: 2px solid #ef9a9a;
+}
+
+.area-trabalho {
+    flex: 1;
+    position: relative;
+    background-image:
+        linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow: hidden;
+}
+
+#camada-linhas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: var(--z-fundo);
+}
+.linha-conexao {
+    stroke: var(--cor-linha);
+    stroke-width: 2.5;
+    cursor: pointer;
+    pointer-events: stroke;
+}
+.linha-conexao:hover { stroke: #e53935; stroke-width: 4; }
+
+.texto-cardinalidade {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    fill: #1a1a2e;
+    pointer-events: none;
+}
+
+.modo-label {
+    position: absolute;
+    top: 10px; left: 14px;
+    background: rgba(26,26,46,0.85);
+    color: #a5b4fc;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    z-index: var(--z-ui-base);
+}
+
+.barra-inferior {
+    position: absolute;
+    bottom: 14px; right: 14px;
+    display: flex;
+    gap: 8px;
+    z-index: var(--z-ui-base);
+}
+.btn-limpar, .btn-validar {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+.btn-limpar {
+    border: 1px solid #ddd;
+    background: #f5f5f5; color: #555;
+}
+.btn-limpar:hover { background: #ffebee; color: #c62828; border-color: #ef9a9a; }
+
+.btn-validar {
+    border: none;
+    background: #4caf50; color: white;
+}
+.btn-validar:hover { background: #388e3c; }
+
+/* =========================================
+   6. COLUNA DIREITA E MASCOTE
+========================================= */
+.barra-lateral-direita {
+    flex: 0 0 clamp(200px, 18vw, 250px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ferramentas {
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+.ferramentas-titulo {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #9e9e9e;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    text-align: center;
+}
+
+.ferramenta {
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 800;
+    user-select: none;
+    transition: transform 0.15s;
+    color: #1a1a2e;
+}
+.ferramenta:hover { transform: scale(1.06); }
+.ferramenta:active { cursor: grabbing; }
+.sep { width: 100%; height: 1px; background: #f0f0f0; margin: 2px 0; }
+
+.container-mascote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.imagem-mascote {
+    width: 80%;
+    max-width: 180px;
+    height: auto;
+}
+.balao-fala {
+    padding: 15px;
+    margin-bottom: 15px; /* Invertido para o balão ficar ACIMA do pinguim */
+    position: relative;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #333;
+}
+.balao-fala::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0 10px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+/* =========================================
+   7. MENUS CONTEXTUAIS E MODAIS
+*/
+
+   .tela-abertura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a2e; /* Azul bem escuro, quase noite */
+    background-image: radial-gradient(circle, #2a2a4a 0%, #1a1a2e 100%);
+    z-index: 9999999; /* Fica na frente de absolutamente tudo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out; /* Efeito suave ao sumir */
+}
+
+.conteudo-abertura {
+    text-align: center;
+    color: white;
+    animation: flutuar 3s ease-in-out infinite; /* Um leve balanço RPG */
+}
+
+.titulo-epico {
+    font-size: 4rem;
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.subtitulo {
+    font-size: 1.2rem;
+    color: #a8b2d1;
+    margin-bottom: 40px;
+}
+
+.mascote-abertura {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin: 0 auto 40px auto;
+}
+
+.btn-start {
+    background-color: #e94560;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-start:hover {
+    background-color: #ff5e7e;
+    transform: scale(1.05);
+}
+
+@keyframes flutuar {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}

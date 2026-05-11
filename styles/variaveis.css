@@ -1,0 +1,54 @@
+/* =========================================
+   1. VARIÁVEIS GLOBAIS E Z-INDEX
+========================================= */
+:root {
+    /* Cores Base */
+    --cor-fundo: #f0f2f7;
+    --cor-primaria: #3949ab;
+    --cor-linha: #455a64;
+    
+    /* Cores do MER */
+    --cor-entidade: #90caf9;
+    --cor-entidade-borda: #1e88e5;
+    --cor-relacionamento: #ef9a9a;
+    --cor-relacionamento-borda: #e53935;
+    --cor-atributo: #a5d6a7;
+    --cor-atributo-borda: #43a047;
+    --cor-agregacao: #ce93d8;
+    --cor-agregacao-borda: #8e24aa;
+    --cor-heranca: #ffcc80;
+    --cor-heranca-borda: #ef6c00;
+    
+    /* Efeitos e Medidas */
+    --sombra: 0 4px 12px rgba(0,0,0,0.12);
+    --raio: 10px;
+
+    /* Escala de Z-Index (Fim da sobreposição acidental) */
+    --z-fundo: 0;
+    --z-canvas: 1;
+    --z-ui-base: 5;
+    --z-alerta: 50;
+    --z-menu-contextual: 200;
+}
+
+/* =========================================
+   2. RESET E LAYOUT PRINCIPAL
+========================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Nunito', sans-serif;
+    padding: 16px;
+    background: var(--cor-fundo);
+    display: flex;
+    height: 100vh;
+    gap: 16px;
+    overflow: hidden; /* Evita rolagem quebrando a tela inteira */
+}
+
+/* Container de 3 colunas */
+.area-trabalho-principal {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+}

@@ -1,0 +1,119 @@
+/* =========================================
+   3. CLASSES UTILITÁRIAS (DRY)
+========================================= */
+/* Agrupa todos os elementos que têm visual de "Cartão" branco */
+.texto-cenario, 
+.legenda, 
+.ferramentas, 
+.painel-cardinalidade,
+.balao-fala {
+    background: white;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    border: 1px solid #e8eaf6;
+}
+
+
+
+/* =========================================
+   8. MENUS FLUTUANTES E MODAIS
+========================================= */
+/* O visual da Chave Primária */
+
+.elemento-canvas.is-fraca {
+    border: 4px double #1a1a1a !important; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Um brilho a mais pra destacar! */
+}
+
+
+/* 2. A MÁGICA: Conserta os triângulos exclusivamente no Relacionamento (Losango) */
+.elemento-canvas.forma-relacionamento.is-fraca {
+    border: none !important; /* Tira a borda quadrada bugada */
+    
+    /* Desenha o contorno duplo do losango perfeitamente usando SVG */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,2 98,50 50,98 2,50" fill="none" stroke="%231a1a1a" stroke-width="3"/><polygon points="50,12 88,50 50,88 12,50" fill="none" stroke="%231a1a1a" stroke-width="3"/></svg>') !important;
+    background-size: 100% 100%;
+    background-position: center;
+}
+.elemento-canvas.is-pk {
+    text-decoration: underline;
+    font-weight: bold;
+}
+.menu-contextual {
+    display: none;
+    position: fixed;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 9999 !important; /* Garante que fique na frente de TUDO */
+    min-width: 180px;
+    overflow: hidden;
+}
+.menu-contextual.ativo {
+    display: block !important;
+}
+.menu-item {
+    padding: 10px 16px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    transition: background 0.15s;
+}
+.menu-item:hover { background: #f5f5f5; }
+.menu-item.perigo { color: #e53935; }
+.menu-item.perigo:hover { background: #ffebee; }
+
+.painel-cardinalidade {
+    display: none;
+    position: fixed;
+    z-index: var(--z-menu-contextual);
+    padding: 16px;
+    width: 240px;
+}
+.painel-cardinalidade.ativo { display: block; }
+.painel-cardinalidade h4 { margin: 0 0 12px; font-size: 0.85rem; color: var(--cor-primaria); }
+
+.card-label { margin-bottom: 6px; font-size: 0.75rem; font-weight: 700; color: #555; }
+.card-opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+.card-op {
+    padding: 6px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: #333;
+}
+.card-op:hover { border-color: var(--cor-primaria); background: #e8eaf6; color: var(--cor-primaria); }
+.card-op.selecionado { border-color: var(--cor-primaria); background: var(--cor-primaria); color: white; }
+
+.card-fechar {
+    margin-top: 6px; width: 100%; padding: 7px;
+    border: none; border-radius: 6px;
+    background: #f5f5f5; font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: 0.82rem; cursor: pointer;
+}
+.card-fechar:hover { background: #e0e0e0; }
+
+
+.elemento-canvas.forma-atributo.is-pk {
+    text-decoration: underline; /* Convenção do MER */
+    border-width: 4px; /* Borda mais grossa para destacar */
+    background: #81c784; /* Um verde levemente mais escuro que o padrão */
+}
+.elemento-canvas {
+    user-select: none; /* Bloqueia a seleção de texto ao arrastar */
+}
+
+.elemento-canvas.editando {
+    user-select: text; /* Libera o texto na hora de editar */
+    cursor: text !important;
+}

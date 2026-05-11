@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>MER Em Cena</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="telaAbertura" class="tela-abertura">
+        <div class="conteudo-abertura">
+            <h1 class="titulo-epico">◈ MER EM CENA</h1>
+            <p class="subtitulo">Luz, Câmera e Modelagem de Dados!</p>
+            
+            <img src="pinguim_feliz.gif" alt="Diretor Pinguim" class="mascote-abertura">
+            
+            <button class="btn-start" onclick="iniciarJogo()">▶ Iniciar Gravação</button>
+        </div>
+    </div>
+
+    <div class="painel-cardinalidade" id="painelCardinalidade" style="display: none;">
+    <h4>📐 Cardinalidade</h4>
+    <div class="card-label">Lado 1:</div>
+    <div class="card-opcoes" id="card-lado1">
+        <div class="card-op" onclick="selecionarCard(this,'lado1','1')">1</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado1','N')">N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado1','0,1')">0,1</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado1','1,N')">1,N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado1','0,N')">0,N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado1','M')">M</div>
+    </div>
+    <div class="card-label">Lado 2:</div>
+    <div class="card-opcoes" id="card-lado2">
+        <div class="card-op" onclick="selecionarCard(this,'lado2','1')">1</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado2','N')">N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado2','0,1')">0,1</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado2','1,N')">1,N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado2','0,N')">0,N</div>
+        <div class="card-op" onclick="selecionarCard(this,'lado2','M')">M</div>
+    </div>
+    <button class="card-fechar" onclick="fecharCardinalidade()">✓ Confirmar</button>
+</div>
+<div class="menu-contextual" id="menuContextualElemento" style="display: none;">
+    <div class="menu-item" id="btnTornarPK" onclick="menuTornarPK()">🔑 Tornar Chave Primária</div>
+    
+    <div class="menu-item" id="btnTornarEntidadeFraca" onclick="menuTornarFraca()">⬛ Tornar Entidade Fraca</div>
+    
+    <div class="menu-item" id="btnTornarRelFraco" onclick="menuTornarFraca()">💎 Tornar Rel. Identificador</div>
+    
+    <div class="menu-item" onclick="fecharMenuElemento()" style="color:#999;font-size:0.75rem;">Cancelar</div>
+</div>
+<div class="area-trabalho-principal">
+
+    <aside class="painel-narrativa">
+        <div class="video-container">
+            <video id="videoCenario" width="100%" controls>
+                <source src="videoteste.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+        </div>
+
+
+        <div class="texto-cenario" id="textoCenario"></div>
+        <div class="legenda">
+            <div class="legenda-titulo">Legenda</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:var(--cor-entidade);border:1.5px solid var(--cor-entidade-borda);"></div> Entidade</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:var(--cor-relacionamento);border:1.5px solid var(--cor-relacionamento-borda);transform:rotate(45deg);width:10px;height:10px;border-radius:0;"></div> Relacionamento</div>
+            <div class="legenda-item"><div class="legenda-cor" style="background:var(--cor-atributo);border:1.5px solid var(--cor-atributo-borda);border-radius:50%;"></div> Atributo</div>
+            
+        </div>
+    </aside>
+
+    <main class="painel-modelagem">
+        
+        <div class="topbar">
+            <span class="topbar-title">◈ MER EM CENA</span>
+            <div class="topbar-modos">
+                <button class="btn-modo ativo" id="btn-modo-conectar" onclick="setModo('conectar')">🔗 Conectar</button>
+                <button class="btn-modo" id="btn-modo-remover" onclick="setModo('remover')">✕ Remover El.</button>
+            </div>
+        </div>
+        <div class="menu-contextual" id="menuContextual">
+            <div class="menu-item" onclick="menuCardinalidade()">📐 Definir Cardinalidade</div>
+            <div class="menu-item perigo" onclick="menuRemoverConexao()">✕ Remover Ligação</div>
+            <div class="menu-item" onclick="fecharMenu()" style="color:#999;font-size:0.75rem;">Cancelar</div>
+        </div>
+
+        <div class="alerta-erro" id="alertaErro"></div>
+
+        <div class="area-trabalho" id="areaTrabalho">
+            <svg id="camada-linhas"></svg>
+            <div class="modo-label" id="modoLabel">MODO: CONECTAR  |  arraste para mover</div>
+            
+            <div class="barra-inferior">
+                <button class="btn-validar" onclick="validarModelo()">✓ Validar Modelo</button>
+                <button class="btn-limpar" onclick="limparTudo()">⌫ Limpar Tudo</button>
+            </div>
+        </div>
+    </main>
+
+    <aside class="barra-lateral-direita">
+        
+        <div class="ferramentas">
+            <div class="ferramentas-titulo">Elementos</div>
+            <div class="ferramenta forma-entidade" draggable="true" data-tipo="entidade">Entidade</div>
+            <div class="ferramenta forma-relacionamento" draggable="true" data-tipo="relacionamento">Rel.</div>
+            <div class="ferramenta forma-atributo" draggable="true" data-tipo="atributo">Atributo</div>
+           
+        </div>
+
+        <div class="container-mascote">
+            <div class="balao-fala">
+                <p>Eita!</p>
+            </div>
+            <img src="mascote.jpg" alt="Mascote da Plataforma" class="imagem-mascote">
+        </div>
+
+    </aside>
+
+</div>
+<script type="module" src="script/main.js"></script>
+</body>
+</html>
